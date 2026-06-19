@@ -1,0 +1,25 @@
+:root {
+  /* くすみピンク基調（ブランドカラー） */
+  --tete-pink: #e8b4b8;
+  --tete-bg: #fdf6f3;
+  --tete-text: #4a3f3a;
+  font-family:
+    system-ui, -apple-system, "Hiragino Kaku Gothic ProN", "Noto Sans JP",
+    sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--tete-bg);
+  color: var(--tete-text);
+}
+
+#app {
+  min-height: 100dvh;
+}

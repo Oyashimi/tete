@@ -1,0 +1,17 @@
+{
+  "name": "tete",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @tete/web",
+    "build": "npm run build -w @tete/web",
+    "deploy": "npm run deploy -w @tete/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "db:generate": "npm run db:generate -w @tete/web",
+    "db:migrate:local": "npm run db:migrate:local -w @tete/web"
+  }
+}

@@ -1,0 +1,6 @@
+# ローカル開発用シークレット（コピーして .dev.vars を作る）。.dev.vars はgit管理外。
+# Better Auth 配線時に使用：
+# GOOGLE_CLIENT_ID=
+# GOOGLE_CLIENT_SECRET=
+# BETTER_AUTH_SECRET=
+# BETTER_AUTH_URL=http://localhost:5173
