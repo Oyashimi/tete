@@ -1,0 +1,36 @@
+{
+  "name": "@tete/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "vite build && wrangler deploy",
+    "typecheck": "vue-tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:local": "wrangler d1 migrations apply tete --local",
+    "db:migrate:remote": "wrangler d1 migrations apply tete --remote",
+    "cf-typegen": "wrangler types"
+  },
+  "dependencies": {
+    "@tete/shared": "*",
+    "drizzle-orm": "^0.38.2",
+    "hono": "^4.6.14",
+    "pinia": "^2.3.0",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.0.0",
+    "@cloudflare/workers-types": "^4.20241218.0",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "drizzle-kit": "^0.30.1",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7",
+    "vue-tsc": "^2.2.0",
+    "wrangler": "^4.0.0"
+  }
+}
