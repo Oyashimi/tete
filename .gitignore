@@ -5,5 +5,7 @@ dist/
 .dev.vars
 *.local
 .DS_Store
+# 個人の学習・作業ノート（コミットしない）
+docs/
 # drizzle generated sql is committed; local sqlite is not
 apps/web/.wrangler/

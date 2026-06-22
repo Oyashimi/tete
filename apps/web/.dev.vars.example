@@ -1,6 +1,15 @@
-# ローカル開発用シークレット（コピーして .dev.vars を作る）。.dev.vars はgit管理外。
-# Better Auth 配線時に使用：
-# GOOGLE_CLIENT_ID=
-# GOOGLE_CLIENT_SECRET=
-# BETTER_AUTH_SECRET=
-# BETTER_AUTH_URL=http://localhost:5173
+# ローカル開発用シークレット。これをコピーして `.dev.vars` を作る（.dev.vars はgit管理外）。
+#
+# Google OAuth クライアントの作り方:
+#   1. https://console.cloud.google.com/ で OAuth 2.0 クライアントID（種別: ウェブアプリ）を作成
+#   2. 承認済みリダイレクトURIに次を登録:
+#        http://localhost:5173/api/auth/callback/google   (ローカル)
+#        https://<本番ドメイン>/api/auth/callback/google   (本番)
+#   3. 発行された Client ID / Secret を下に貼る
+#
+# BETTER_AUTH_SECRET は十分に長いランダム文字列（例: `openssl rand -base64 32`）
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=http://localhost:5173

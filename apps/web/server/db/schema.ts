@@ -6,6 +6,7 @@ import {
   sqliteTable,
   text,
 } from "drizzle-orm/sqlite-core";
+import type { SpaceKind } from "@tete/shared";
 
 // ── 共通ヘルパ ──────────────────────────────────────────────
 // 全テーブルのIDはUUIDで統一（URLに出ても総当たりされない）
@@ -18,20 +19,75 @@ const createdAt = () =>
     .notNull()
     .default(sql`(CURRENT_TIMESTAMP)`);
 
-// ── 認証（Better Auth コア互換の最小） ─────────────────────────
-// 本格配線時に Better Auth のスキーマ生成で session/account/verification を追加する。
+// ── 認証（Better Auth コアスキーマ） ──────────────────────────
+// Better Auth が直接読み書きする4テーブル（user / session / account / verification）。
+// Better Auth は値を JS の Date で渡すため、日付列は `integer({ mode: "timestamp" })`
+// にする（既存の text + CURRENT_TIMESTAMP では Date を保存できず壊れる）。
+// 列の TS プロパティ名は Better Auth のフィールド名（camelCase）に厳密一致させる
+// ＝ server/auth.ts のアダプタが名前でマッピングするため。
+const authCreatedAt = () =>
+  integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date());
+const authUpdatedAt = () =>
+  integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date());
+
 export const users = sqliteTable("users", {
   id: text("id").primaryKey(), // Better Auth が採番
-  name: text("name"),
+  name: text("name").notNull(),
   email: text("email").notNull().unique(),
   emailVerified: integer("email_verified", { mode: "boolean" })
     .notNull()
     .default(false),
   image: text("image"),
-  createdAt: createdAt(),
-  updatedAt: text("updated_at")
+  createdAt: authCreatedAt(),
+  updatedAt: authUpdatedAt(),
+});
+
+export const sessions = sqliteTable("sessions", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
     .notNull()
-    .default(sql`(CURRENT_TIMESTAMP)`),
+    .references(() => users.id, { onDelete: "cascade" }),
+  token: text("token").notNull().unique(),
+  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
+  createdAt: authCreatedAt(),
+  updatedAt: authUpdatedAt(),
+});
+
+export const accounts = sqliteTable("accounts", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  accountId: text("account_id").notNull(), // プロバイダ側のユーザーID
+  providerId: text("provider_id").notNull(), // 'google' 等
+  accessToken: text("access_token"),
+  refreshToken: text("refresh_token"),
+  accessTokenExpiresAt: integer("access_token_expires_at", {
+    mode: "timestamp",
+  }),
+  refreshTokenExpiresAt: integer("refresh_token_expires_at", {
+    mode: "timestamp",
+  }),
+  scope: text("scope"),
+  idToken: text("id_token"),
+  password: text("password"), // メール/パスワード認証用（本プロジェクトでは未使用）
+  createdAt: authCreatedAt(),
+  updatedAt: authUpdatedAt(),
+});
+
+export const verifications = sqliteTable("verifications", {
+  id: text("id").primaryKey(),
+  identifier: text("identifier").notNull(),
+  value: text("value").notNull(),
+  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+  createdAt: authCreatedAt(),
+  updatedAt: authUpdatedAt(),
 });
 
 // ── 中核：スペース / 所属 / 招待 ───────────────────────────────
@@ -39,7 +95,7 @@ export const users = sqliteTable("users", {
 export const spaces = sqliteTable("spaces", {
   id: uuidPk(),
   startedOn: text("started_on"), // 付き合った日（日数表示の基準）
-  kind: text("kind").notNull().default("couple"), // 'couple' | 'solo'
+  kind: text("kind").$type<SpaceKind>().notNull().default("couple"), // 'couple' | 'solo'
   displayName: text("display_name"), // 相手の表示名（案A：ソロ時に使用）
   createdAt: createdAt(),
   deletedAt: text("deleted_at"), // 論理削除（別れ→アーカイブ）
