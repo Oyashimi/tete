@@ -27,8 +27,17 @@ export const requireSpaceMember = createMiddleware<HonoEnv>(async (c, next) => {
     return c.json({ error: "not_found" }, 404);
   }
   const db = c.get("db");
-  const [row] = await db
-    .select({ space: spaces })
+  // 一覧（/api/spaces）と同じ Space 契約に揃えて取得する。
+  // deletedAt 等の内部列を漏らさず、joinedAt を含めるため列を明示的に投影する。
+  const [space] = await db
+    .select({
+      id: spaces.id,
+      kind: spaces.kind,
+      displayName: spaces.displayName,
+      startedOn: spaces.startedOn,
+      createdAt: spaces.createdAt,
+      joinedAt: spaceMembers.joinedAt,
+    })
     .from(spaceMembers)
     .innerJoin(spaces, eq(spaceMembers.spaceId, spaces.id))
     .where(
@@ -41,10 +50,10 @@ export const requireSpaceMember = createMiddleware<HonoEnv>(async (c, next) => {
     )
     .limit(1);
 
-  if (!row) {
+  if (!space) {
     return c.json({ error: "not_found" }, 404);
   }
 
-  c.set("space", row.space);
+  c.set("space", space);
   await next();
 });

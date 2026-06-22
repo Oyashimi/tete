@@ -68,7 +68,8 @@ api.get("/spaces", requireAuth, async (c) => {
 
 // 単一スペース取得。requireSpaceMember がメンバーシップを検証し space を載せる。
 api.get("/spaces/:spaceId", requireSpaceMember, (c) =>
-  c.json({ space: c.get("space") }),
+  // requireSpaceMember が通過時に必ず設定する。
+  c.json({ space: c.get("space")! }),
 );
 
 export default app;
