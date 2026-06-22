@@ -5,6 +5,7 @@ import {
   GIFT_DIRECTION,
   PARTNER_NOTE_CATEGORY,
   RECURRENCE,
+  SPACE_KIND,
 } from "./enums";
 
 // API入力のバリデーション＝そのまま型にもなる。
@@ -73,3 +74,15 @@ export const createSpaceSchema = z.object({
   displayName: z.string().max(50).optional(), // 相手の表示名（案A）
 });
 export type CreateSpace = z.infer<typeof createSpaceSchema>;
+
+// スペースのAPIレスポンス契約（一覧・単体取得で共通）。
+// フロントとAPIで同じ型を使うための単一ソース。
+export const spaceSchema = z.object({
+  id: z.string(),
+  kind: z.enum(SPACE_KIND),
+  displayName: z.string().nullable(),
+  startedOn: z.string().nullable(),
+  createdAt: z.string(),
+  joinedAt: z.string(), // 自分がこの箱に参加した日時（space_members より）
+});
+export type Space = z.infer<typeof spaceSchema>;

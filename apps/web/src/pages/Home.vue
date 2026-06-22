@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import { useSession, signOut, signInWithGoogle } from "../lib/auth-client";
 
 // /api/health を叩いて、Vue ↔ Hono(Worker) の疎通を確認する。
 const status = ref<string>("...");
+
+// Better Auth のセッション（リアクティブ）。ログイン中ならユーザー情報が入る。
+const session = useSession();
 
 onMounted(async () => {
   try {
@@ -18,7 +22,21 @@ onMounted(async () => {
 <template>
   <main class="wrap">
     <h1>tete</h1>
-    <p class="tagline">手と手をつなぐ、ふたりだけの記録アプリ。</p>
+    <!-- <p class="tagline">手と手をつなぐ、ふたりだけの記録アプリ。</p> -->
+
+    <div class="auth">
+      <template v-if="session.isPending">
+        <p class="muted">確認中…</p>
+      </template>
+      <template v-else-if="session.data">
+        <p class="hello">こんにちは、{{ session.data.user.name }} さん</p>
+        <button class="btn ghost" @click="signOut()">ログアウト</button>
+      </template>
+      <template v-else>
+        <button class="btn" @click="signInWithGoogle()">Googleでログイン</button>
+      </template>
+    </div>
+
     <p class="api">API: {{ status }}</p>
   </main>
 </template>
@@ -43,6 +61,35 @@ h1 {
 .tagline {
   color: #8a7a72;
   margin: 0;
+}
+.auth {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.hello {
+  margin: 0;
+  color: #6b5b53;
+}
+.muted {
+  margin: 0;
+  color: #b0a39c;
+}
+.btn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.4rem;
+  background: #e8a0a8;
+  color: #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.btn.ghost {
+  background: transparent;
+  color: #8a7a72;
+  border: 1px solid #e0d5cf;
 }
 .api {
   margin-top: 1rem;
