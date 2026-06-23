@@ -10,8 +10,15 @@ import {
 // API入力のバリデーション＝そのまま型にもなる。
 // 例として共有系（デート予定・バケツ・記念日）と個人系（スキンケア）を定義。
 
-const isoDate = z.string().min(1); // YYYY-MM-DD 想定
-const isoDateTime = z.string().min(1); // ISO8601 日時想定（終日のときは日付の0時）
+// 日付・日時はいずれも文字列。min(1) のみで「形式は検証していない」点に注意
+// （厳密な .datetime() を入れると下記 createdAt の不一致で parse が壊れるため）。
+const isoDate = z.string().min(1); // 期待フォーマット: "YYYY-MM-DD"
+// 期待フォーマット: ISO8601 の "YYYY-MM-DDTHH:MM:SS"（T 区切り。終日は当日0時）。
+// フロント/モックはこの形（例 "2026-06-17T13:00:00"）。DB の start_at もこれに揃える。
+// ⚠ 例外: createdAt 等の DB 既定値は SQLite CURRENT_TIMESTAMP = "YYYY-MM-DD HH:MM:SS"
+//   （T も Z も無く UTC）を返すため、現状この型は ISO8601 を保証しない。
+//   API レスポンス層を実装する際に ISO8601 へ正規化する想定（未実装）。
+const isoDateTime = z.string().min(1);
 
 // --- デート記録・予定（型D：共有エンティティ） ---
 // カレンダーは Googleカレンダー型：終日 or 時刻指定を持つ。
