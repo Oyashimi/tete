@@ -28,6 +28,11 @@ export const router = createRouter({
           component: () => import("./pages/space/SpaceAnniversary.vue"),
         },
         {
+          path: "bucket",
+          name: "space-bucket",
+          component: () => import("./pages/space/SpaceBucket.vue"),
+        },
+        {
           path: "personal",
           name: "space-personal",
           component: () => import("./pages/space/SpacePersonal.vue"),

@@ -86,6 +86,19 @@ export const createBucketItemSchema = z.object({
 });
 export type CreateBucketItem = z.infer<typeof createBucketItemSchema>;
 
+// バケツリスト項目のAPIレスポンス契約。共有エンティティ＝2人で見る。
+// 雑記ボード（やりたいこと・行きたい場所・おすすめ等）として使う想定で、
+// 投稿者（createdBy）を持ち、UIでは自分/相手を左右に振り分ける。
+export const bucketItemSchema = z.object({
+  id: z.string(),
+  spaceId: z.string(),
+  title: z.string(),
+  status: z.enum(BUCKET_STATUS),
+  createdBy: z.string(),
+  createdAt: isoDateTime,
+});
+export type BucketItem = z.infer<typeof bucketItemSchema>;
+
 // --- スキンケアログ（型B：個人） ---
 export const createSkincareLogSchema = z.object({
   condition: z.number().int().min(1).max(5).optional(),
