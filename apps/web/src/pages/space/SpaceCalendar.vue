@@ -833,7 +833,7 @@ function deleteEvent() {
   font-size: 0.95rem;
   font-weight: 600;
 }
-.detail-bar {
+.detail.form .detail-bar {
   display: flex;
   align-items: center;
 }

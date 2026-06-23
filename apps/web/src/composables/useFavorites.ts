@@ -18,7 +18,14 @@ function load(spaceId: string): string[] {
     let initial: string[] = [];
     try {
       const raw = localStorage.getItem(storageKey(spaceId));
-      if (raw) initial = JSON.parse(raw);
+      if (raw) {
+        const parsed: unknown = JSON.parse(raw);
+        // JSON.parse はオブジェクトや文字列でも成功するため、
+        // string[] であることを検証してから採用する（不正値は空配列扱い）。
+        if (Array.isArray(parsed) && parsed.every((v) => typeof v === "string")) {
+          initial = parsed;
+        }
+      }
     } catch {
       initial = [];
     }
