@@ -18,7 +18,7 @@ const tabs = [
 <template>
   <div class="layout">
     <div class="content">
-      <RouterView />
+      <RouterView :key="spaceId" />
     </div>
 
     <nav class="tabbar">

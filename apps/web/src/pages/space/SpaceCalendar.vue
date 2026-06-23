@@ -24,7 +24,11 @@ const spaceId = computed(() => String(route.params.id));
 const { cursor, monthLabel, weeks, prevMonth, nextMonth, goToday } =
   useCalendarMonth(spaceId.value);
 
-const queryDate = typeof route.query.date === "string" ? route.query.date : null;
+// クエリの date は不正値が混入しうるため dayjs で検証し、無効なら無視する
+const rawQueryDate =
+  typeof route.query.date === "string" ? route.query.date : null;
+const queryDate =
+  rawQueryDate && dayjs(rawQueryDate).isValid() ? rawQueryDate : null;
 const selectedDate = ref(queryDate ?? dayjs().format("YYYY-MM-DD"));
 if (queryDate) cursor.value = dayjs(queryDate).startOf("month");
 
