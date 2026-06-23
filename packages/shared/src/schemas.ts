@@ -92,7 +92,7 @@ export type CreateBucketItem = z.infer<typeof createBucketItemSchema>;
 export const bucketItemSchema = z.object({
   id: z.string(),
   spaceId: z.string(),
-  title: z.string(),
+  title: z.string().min(1).max(200),
   status: z.enum(BUCKET_STATUS),
   createdBy: z.string(),
   createdAt: isoDateTime,

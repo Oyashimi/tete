@@ -92,6 +92,7 @@ function onDelete(item: BucketItemView) {
             v-model="editText"
             class="edit-area"
             rows="2"
+            maxlength="200"
             @keydown.escape="cancelEdit"
           ></textarea>
           <div class="edit-ops">
