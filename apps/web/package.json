@@ -17,6 +17,7 @@
   "dependencies": {
     "@tete/shared": "*",
     "better-auth": "^1.6.20",
+    "dayjs": "^1.11.21",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.6.14",
     "pinia": "^2.3.0",
