@@ -36,13 +36,13 @@ export const dateEventSchema = z.object({
   spaceId: z.string(),
   title: z.string(),
   allDay: z.boolean(),
-  startAt: z.string(),
-  endAt: z.string().nullable(),
+  startAt: isoDateTime,
+  endAt: isoDateTime.nullable(),
   location: z.string().nullable(),
   memo: z.string().nullable(), // 共有メモ
   personalNote: z.string().nullable(), // 自分の個人メモ
   createdBy: z.string(),
-  createdAt: z.string(),
+  createdAt: isoDateTime,
 });
 export type DateEvent = z.infer<typeof dateEventSchema>;
 
@@ -66,9 +66,9 @@ export const anniversarySchema = z.object({
   id: z.string(),
   spaceId: z.string(),
   title: z.string(),
-  eventDate: z.string(), // 基準日 YYYY-MM-DD
+  eventDate: isoDate, // 基準日 YYYY-MM-DD
   recurrence: z.enum(RECURRENCE),
-  createdAt: z.string(),
+  createdAt: isoDateTime,
 });
 export type Anniversary = z.infer<typeof anniversarySchema>;
 
@@ -116,8 +116,8 @@ export const spaceSchema = z.object({
   id: z.string(),
   kind: z.enum(SPACE_KIND),
   displayName: z.string().nullable(),
-  startedOn: z.string().nullable(),
-  createdAt: z.string(),
-  joinedAt: z.string(), // 自分がこの箱に参加した日時（space_members より）
+  startedOn: isoDate.nullable(),
+  createdAt: isoDateTime,
+  joinedAt: isoDateTime, // 自分がこの箱に参加した日時（space_members より）
 });
 export type Space = z.infer<typeof spaceSchema>;

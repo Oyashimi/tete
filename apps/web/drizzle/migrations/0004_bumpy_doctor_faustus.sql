@@ -1,0 +1,1 @@
+ALTER TABLE `date_events` DROP COLUMN `event_date`;
