@@ -3,10 +3,6 @@
 export const SPACE_KIND = ["couple", "solo"] as const;
 export type SpaceKind = (typeof SPACE_KIND)[number];
 
-// デート予定/記録の状態：予定 → 実施済み
-export const DATE_EVENT_STATUS = ["planned", "done"] as const;
-export type DateEventStatus = (typeof DATE_EVENT_STATUS)[number];
-
 // バケツリスト項目：未定 → 予定入れた → 達成
 export const BUCKET_STATUS = ["open", "scheduled", "done"] as const;
 export type BucketStatus = (typeof BUCKET_STATUS)[number];

@@ -173,9 +173,12 @@ export const dateEvents = sqliteTable(
       .notNull()
       .references(() => spaces.id, { onDelete: "cascade" }),
     title: text("title").notNull(),
-    eventDate: text("event_date").notNull(), // 予定日 or 行った日
+    // カレンダーは Googleカレンダー型：終日 or 時刻指定を持つ（createDateEventSchema と一致）。
+    allDay: integer("all_day", { mode: "boolean" }).notNull().default(false),
+    startAt: text("start_at").notNull(), // 開始日時（終日のときは当日0時）
+    endAt: text("end_at"), // 終了日時（終日 or 単発のときは null）
     location: text("location"),
-    status: text("status").notNull().default("planned"), // planned | done
+    memo: text("memo"), // 共有メモ（2人で見る）。個人メモは date_event_notes 側
     sourceBucketId: text("source_bucket_id"), // バケツリスト由来なら紐付け
     createdBy: text("created_by")
       .notNull()
