@@ -1,0 +1,27 @@
+// スペース内の機能タイル定義。ホーム／じぶんタブで共通利用する。
+// ここを一元化することで、入口の二重定義（表記ゆれ）を防ぐ。
+
+export type Feature = {
+  key: string;
+  icon: string;
+  label: string;
+  wide?: boolean; // タイルを横幅いっぱいに広げる
+  route?: string; // 遷移先のルート名（未設定なら遷移しない＝準備中）
+};
+
+// 共有機能（2人で見る）。
+export const SHARED_FEATURES: Feature[] = [
+  { key: "calendar", icon: "📅", label: "デート記録・予定", route: "space-calendar" },
+  { key: "anniversary", icon: "🎉", label: "記念日", route: "space-anniversary" },
+  { key: "bucket", icon: "🪣", label: "バケツリスト", wide: true },
+];
+
+// 個人機能（自分だけ・相手に見えない）。
+// じぶんタブで全項目を表示し、お気に入りしたものをホームに出す。
+export const PERSONAL_FEATURES: Feature[] = [
+  { key: "skincare", icon: "🧴", label: "スキンケア" },
+  { key: "outfit", icon: "👗", label: "服装記録" },
+  { key: "predate", icon: "📝", label: "会う前メモ" },
+  { key: "gift", icon: "🎁", label: "プレゼント" },
+  { key: "partner", icon: "📖", label: "地雷・好み図鑑", wide: true },
+];
