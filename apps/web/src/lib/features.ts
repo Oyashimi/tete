@@ -13,7 +13,7 @@ export type Feature = {
 export const SHARED_FEATURES: Feature[] = [
   { key: "calendar", icon: "📅", label: "デート記録・予定", route: "space-calendar" },
   { key: "anniversary", icon: "🎉", label: "記念日", route: "space-anniversary" },
-  { key: "bucket", icon: "🪣", label: "バケツリスト", wide: true },
+  { key: "bucket", icon: "✨", label: "いつかリスト", wide: true, route: "space-bucket" },
 ];
 
 // 個人機能（自分だけ・相手に見えない）。
