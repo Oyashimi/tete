@@ -175,7 +175,6 @@ export const dateEvents = sqliteTable(
     title: text("title").notNull(),
     eventDate: text("event_date").notNull(), // 予定日 or 行った日
     location: text("location"),
-    status: text("status").notNull().default("planned"), // planned | done
     sourceBucketId: text("source_bucket_id"), // バケツリスト由来なら紐付け
     createdBy: text("created_by")
       .notNull()
