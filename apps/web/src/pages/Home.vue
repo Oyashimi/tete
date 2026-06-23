@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import { RouterLink } from "vue-router";
 import { useSession, signOut, signInWithGoogle } from "../lib/auth-client";
 
 // /api/health を叩いて、Vue ↔ Hono(Worker) の疎通を確認する。
@@ -30,12 +31,18 @@ onMounted(async () => {
       </template>
       <template v-else-if="session.data">
         <p class="hello">こんにちは、{{ session.data.user.name }} さん</p>
+        <RouterLink class="btn" :to="{ name: 'spaces' }">スペースへ</RouterLink>
         <button class="btn ghost" @click="signOut()">ログアウト</button>
       </template>
       <template v-else>
         <button class="btn" @click="signInWithGoogle()">Googleでログイン</button>
       </template>
     </div>
+
+    <!-- デザイン段階用：ログインせずに入口を確認できる導線（紐付け後に削除） -->
+    <RouterLink class="design-link" :to="{ name: 'spaces' }"
+      >🎨 デザイン確認（モック）</RouterLink
+    >
 
     <p class="api">API: {{ status }}</p>
   </main>
@@ -59,7 +66,7 @@ h1 {
   letter-spacing: 0.05em;
 }
 .tagline {
-  color: #8a7a72;
+  color: var(--text-muted);
   margin: 0;
 }
 .auth {
@@ -71,29 +78,36 @@ h1 {
 }
 .hello {
   margin: 0;
-  color: #6b5b53;
+  color: var(--text);
 }
 .muted {
   margin: 0;
-  color: #b0a39c;
+  color: var(--text-muted);
 }
 .btn {
   border: none;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   padding: 0.6rem 1.4rem;
-  background: #e8a0a8;
+  background: var(--accent);
   color: #fff;
   font-size: 0.95rem;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
 }
 .btn.ghost {
   background: transparent;
-  color: #8a7a72;
-  border: 1px solid #e0d5cf;
+  color: var(--text-muted);
+  border: 1px solid var(--border-strong);
 }
 .api {
   margin-top: 1rem;
   font-size: 0.85rem;
-  color: #b0a39c;
+  color: var(--text-muted);
+}
+.design-link {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--text-faint);
 }
 </style>

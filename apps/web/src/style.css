@@ -1,11 +1,55 @@
 :root {
-  /* くすみピンク基調（ブランドカラー） */
-  --tete-pink: #e8b4b8;
-  --tete-bg: #fdf6f3;
-  --tete-text: #4a3f3a;
+  /* ── tete デザイントークン ──────────────────────────────
+     方向性：白×黒ベースのシンプル可愛い。ピンクは"差し色"として
+     ごく少量だけ（強調・アクティブ・ハート等）。全画面ピンクにはしない。
+     大学生以上・男性でも使える中立トーンを基準にする。 */
+
+  /* 面（背景） */
+  --bg: #fcfbfa; /* 温かみのあるほぼ白（真っ白より柔らかい） */
+  --surface: #ffffff; /* カード等の面 */
+  --surface-sub: #f6f5f4; /* 共有タイルなどの控えめな面 */
+
+  /* 文字 */
+  --text: #1a1a1a; /* 主役の黒（真っ黒より少し柔らかい） */
+  --text-muted: #8c8884; /* 補足・キャプション */
+  --text-faint: #b8b4b0; /* さらに薄い */
+
+  /* 線 */
+  --border: #ececea;
+  --border-strong: #dcdad7;
+
+  /* 差し色（ピンク）— 少量使用 */
+  --accent: #e8a0a8;
+  --accent-ink: #c97e87; /* ピンク上の文字や濃いめの差し色 */
+  --accent-soft: #fceef0; /* ピンクの極薄面 */
+
+  /* 角丸 */
+  --radius-sm: 10px;
+  --radius: 16px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  /* 影（やわらかく薄く） */
+  --shadow-sm: 0 1px 2px rgba(26, 26, 26, 0.04);
+  --shadow: 0 2px 8px rgba(26, 26, 26, 0.05), 0 8px 24px rgba(26, 26, 26, 0.04);
+
+  /* 下部タブの高さ（カレンダー等の固定レイアウトで参照） */
+  --tabbar-h: 56px;
+
+  /* 余白の基準 */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
   font-family:
     system-ui, -apple-system, "Hiragino Kaku Gothic ProN", "Noto Sans JP",
     sans-serif;
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
 * {
@@ -16,10 +60,14 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: var(--tete-bg);
-  color: var(--tete-text);
+  background: var(--bg);
+  color: var(--text);
 }
 
 #app {
   min-height: 100dvh;
+}
+
+button {
+  font-family: inherit;
 }

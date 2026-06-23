@@ -8,7 +8,7 @@ export const authClient = createAuthClient({
 
 export const { signIn, signOut, useSession } = authClient;
 
-// Googleでログイン。完了後は元のページ（トップ）へ戻す。
+// Googleでログイン。完了後はログイン後の入口（スペース一覧）へ。
 export function signInWithGoogle() {
-  return signIn.social({ provider: "google", callbackURL: "/" });
+  return signIn.social({ provider: "google", callbackURL: "/spaces" });
 }
