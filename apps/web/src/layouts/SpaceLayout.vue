@@ -10,8 +10,6 @@ const spaceId = computed(() => String(route.params.id));
 const tabs = [
   { name: "space", icon: "🏠", label: "ホーム" },
   { name: "space-calendar", icon: "📅", label: "カレンダー" },
-  { name: "space-personal", icon: "👤", label: "じぶん" },
-  { name: "space-settings", icon: "⚙", label: "設定" },
 ];
 </script>
 

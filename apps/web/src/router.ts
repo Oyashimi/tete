@@ -33,11 +33,6 @@ export const router = createRouter({
           component: () => import("./pages/space/SpaceBucket.vue"),
         },
         {
-          path: "personal",
-          name: "space-personal",
-          component: () => import("./pages/space/SpacePersonal.vue"),
-        },
-        {
           path: "settings",
           name: "space-settings",
           component: () => import("./pages/space/SpaceSettings.vue"),

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { RouterLink, useRoute, useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useSpace } from "../../composables/useSpace";
-import { useFavorites } from "../../composables/useFavorites";
 import {
   countdownLabel,
   useAnniversaries,
@@ -16,19 +15,15 @@ const router = useRouter();
 const spaceId = computed(() => String(route.params.id));
 const { space, daysTogether } = useSpace(spaceId.value);
 
-// 共有機能は常に全部出す。個人機能は「じぶん」タブでお気に入りしたものだけ出す。
+// 共有機能・個人機能ともに常に全項目を表示する。
 const sharedFeatures = SHARED_FEATURES;
+const personalFeatures = PERSONAL_FEATURES;
 
 // タイルの遷移先（route があれば対応するタブへ）。未設定なら準備中で何もしない。
 function openFeature(routeName?: string) {
   if (!routeName) return;
   router.push({ name: routeName, params: { id: spaceId.value } });
 }
-const { isFavorite } = useFavorites(spaceId.value);
-const favoritePersonal = computed(() =>
-  PERSONAL_FEATURES.filter((f) => isFavorite(f.key)),
-);
-
 // ホームに出す記念日（記念日画面でピン留めした1件）。
 const { pinned: pinnedAnniversary } = useAnniversaries(spaceId.value);
 
@@ -45,6 +40,13 @@ const headerTitle = computed(() => {
   <div class="page" v-if="space">
     <header class="bar">
       <span class="brand">{{ headerTitle }}</span>
+      <button
+        class="settings-btn"
+        aria-label="設定"
+        @click="openFeature('space-settings')"
+      >
+        ⚙
+      </button>
     </header>
 
     <!-- ヒーロー：2人＝日数カウンター / ソロ＝箱名 -->
@@ -94,13 +96,13 @@ const headerTitle = computed(() => {
       </li>
     </ul>
 
-    <!-- 個人機能（じぶんタブでお気に入りしたものだけ） -->
+    <!-- 個人機能（相手には見えない・常に全項目を表示） -->
     <p class="section-label">
       じぶん用 <span class="muted">・相手に見えません</span>
     </p>
-    <ul v-if="favoritePersonal.length" class="tiles">
+    <ul class="tiles">
       <li
-        v-for="f in favoritePersonal"
+        v-for="f in personalFeatures"
         :key="f.key"
         class="tile personal"
         :class="{ wide: f.wide }"
@@ -109,14 +111,6 @@ const headerTitle = computed(() => {
         <span class="tile-label">{{ f.label }}</span>
       </li>
     </ul>
-    <RouterLink
-      v-else
-      class="fav-empty"
-      :to="{ name: 'space-personal', params: { id: spaceId } }"
-    >
-      <span class="fav-empty-main">⭐ よく使う機能をここに</span>
-      <span class="fav-empty-hint">「じぶん」タブで★を付けると、ここに表示されます</span>
-    </RouterLink>
   </div>
 
   <div class="page" v-else>
@@ -145,6 +139,23 @@ const headerTitle = computed(() => {
 .brand {
   font-weight: 600;
   font-size: 0.95rem;
+}
+/* 設定への入口（フッターから移設） */
+.settings-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 4px;
+  color: var(--text-muted);
+  filter: grayscale(1);
+  opacity: 0.7;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+.settings-btn:hover {
+  opacity: 1;
+  transform: rotate(30deg);
 }
 
 /* ヒーロー */
@@ -302,28 +313,6 @@ const headerTitle = computed(() => {
 .tile-label {
   font-size: 0.85rem;
   font-weight: 500;
-}
-
-/* お気に入り未登録のときの誘導 */
-.fav-empty {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  text-align: center;
-  border: 1px dashed var(--border-strong);
-  border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--text-muted);
-  padding: var(--space-4);
-  text-decoration: none;
-}
-.fav-empty-main {
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--text);
-}
-.fav-empty-hint {
-  font-size: 0.72rem;
 }
 
 .muted {

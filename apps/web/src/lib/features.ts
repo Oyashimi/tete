@@ -17,7 +17,7 @@ export const SHARED_FEATURES: Feature[] = [
 ];
 
 // 個人機能（自分だけ・相手に見えない）。
-// じぶんタブで全項目を表示し、お気に入りしたものをホームに出す。
+// ホームの「じぶん用」セクションに全項目を表示する。
 export const PERSONAL_FEATURES: Feature[] = [
   // デート時に同じ服を避けるため、直近に何を着たかを振り返る用途（記録より参照が主）
   { key: "outfit", icon: "👗", label: "服装記録" },
