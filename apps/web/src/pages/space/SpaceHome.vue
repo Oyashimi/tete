@@ -106,6 +106,7 @@ const headerTitle = computed(() => {
         :key="f.key"
         class="tile personal"
         :class="{ wide: f.wide }"
+        @click="openFeature(f.route)"
       >
         <span class="ico">{{ f.icon }}</span>
         <span class="tile-label">{{ f.label }}</span>

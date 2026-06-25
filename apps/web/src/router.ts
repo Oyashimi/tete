@@ -33,6 +33,11 @@ export const router = createRouter({
           component: () => import("./pages/space/SpaceBucket.vue"),
         },
         {
+          path: "predate",
+          name: "space-predate",
+          component: () => import("./pages/space/SpacePreDate.vue"),
+        },
+        {
           path: "settings",
           name: "space-settings",
           component: () => import("./pages/space/SpaceSettings.vue"),
