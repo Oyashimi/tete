@@ -21,7 +21,7 @@ export const SHARED_FEATURES: Feature[] = [
 export const PERSONAL_FEATURES: Feature[] = [
   // デート時に同じ服を避けるため、直近に何を着たかを振り返る用途（記録より参照が主）
   { key: "outfit", icon: "👗", label: "服装記録" },
-  { key: "predate", icon: "📝", label: "会う前メモ" },
+  { key: "predate", icon: "📝", label: "会う前メモ", route: "space-predate" },
   { key: "gift", icon: "🎁", label: "プレゼント" },
   { key: "partner", icon: "📖", label: "地雷・好み図鑑", wide: true },
 ];

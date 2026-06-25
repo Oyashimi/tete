@@ -107,6 +107,41 @@ export const createSkincareLogSchema = z.object({
 });
 export type CreateSkincareLog = z.infer<typeof createSkincareLogSchema>;
 
+// --- 会う前メモ（型B：個人） ---
+// 次に会う前に話したいこと・確認したいこと等を「セクション（見出し）＋項目」の
+// 2階層で書き留める個人メモ（相手には見えない）。
+// 例）セクション「話したいこと」の中に項目「〇〇があった」「〇〇をみた」…
+//
+// セクション（見出し）。owner_user_id で本人だけが見える個人エンティティ。
+export const createPreDateSectionSchema = z.object({
+  title: z.string().min(1).max(50),
+});
+export type CreatePreDateSection = z.infer<typeof createPreDateSectionSchema>;
+
+export const preDateSectionSchema = z.object({
+  id: z.string(),
+  spaceId: z.string(),
+  ownerUserId: z.string(),
+  title: z.string().min(1).max(50),
+  createdAt: isoDateTime,
+});
+export type PreDateSection = z.infer<typeof preDateSectionSchema>;
+
+// 項目（セクションに属する1行メモ。改行も可）。
+export const createPreDateItemSchema = z.object({
+  sectionId: z.string(),
+  content: z.string().min(1).max(1000),
+});
+export type CreatePreDateItem = z.infer<typeof createPreDateItemSchema>;
+
+export const preDateItemSchema = z.object({
+  id: z.string(),
+  sectionId: z.string(),
+  content: z.string().min(1).max(1000),
+  createdAt: isoDateTime,
+});
+export type PreDateItem = z.infer<typeof preDateItemSchema>;
+
 // --- プレゼント記録（型B：個人） ---
 export const createGiftLogSchema = z.object({
   direction: z.enum(GIFT_DIRECTION),
