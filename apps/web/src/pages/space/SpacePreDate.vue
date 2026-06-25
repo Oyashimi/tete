@@ -43,8 +43,11 @@ function startEditSection(s: PreDateSectionView) {
   editSectionTitle.value = s.title;
 }
 function commitEditSection() {
-  if (editingSectionId.value)
-    renameSection(editingSectionId.value, editSectionTitle.value);
+  if (!editingSectionId.value) return;
+  const title = editSectionTitle.value.trim();
+  // 空（空白のみ）の場合は編集を閉じず、入力を継続させる
+  if (!title) return;
+  renameSection(editingSectionId.value, title);
   editingSectionId.value = null;
   editSectionTitle.value = "";
 }
